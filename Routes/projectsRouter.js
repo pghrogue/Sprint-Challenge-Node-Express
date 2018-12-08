@@ -36,15 +36,18 @@ router.get( '/:id', customMW.checkValidProject, (req, res) => {
   // end projects
 });
 
-// Get actions - may need to come back to this later. Need to add POST first to
-// check for what happens when no actions are available for valid project:
+// Get actions 
 router.get( '/:id/actions', customMW.checkValidProject, (req, res) => {
   const { id } = req.params;
 
   projects
     .getProjectActions(id)
     .then( list => {
-      res.json(list);
+      if( list.length > 0 ) {
+        res.json(list);
+      } else {
+        res.status(404).json({ error: "Could not find any actions for project."});
+      }
     })
     .catch( err => {
       res.status(500).json({ error: `Project actions could not be retrieved.`})
