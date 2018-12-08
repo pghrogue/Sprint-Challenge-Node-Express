@@ -103,7 +103,19 @@ router.put( '/:id', (req, res) => {
 });
 
 // DELETE:
-router.delete( '/:id', (req, res) => {});
+router.delete( '/:id', customMW.checkValidProject, (req, res) => {
+  const { id } = req.params;
+
+  projects
+    .remove(id)
+    .then( count => {
+      res.json({ message: `${count} project deleted.`});
+    })
+    .catch( err => {
+      res.status(500).json({error: "There was an error deleting the project."});
+    })
+  // end projects
+});
 
 
 /* ---------- Export ---------- */
