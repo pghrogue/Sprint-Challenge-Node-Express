@@ -14,13 +14,21 @@ const PORT = 5454;
 
 /* ---------- Middleware: ---------- */
 server.use(
-  express.json,
+  express.json(),
   morgan('dev')
 );
 
 
 /* ---------- Routes Middleware: ---------- */
 server.use('/api/projects', projectsRouter);
+
+// Default route handlers - for testing.
+server.get( '/', (req, res) => {
+  res.json({ message: "Connected" });
+});
+server.get( '/api', (req, res) => {
+  res.json({ message: "Connected to API" });
+});
 
 
 /* ---------- Listen for incoming requests: ---------- */
