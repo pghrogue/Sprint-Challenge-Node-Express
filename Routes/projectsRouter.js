@@ -78,7 +78,29 @@ router.post( '/', (req, res) => {
 });
 
 // PUT:
-router.put( '/:id', (req, res) => {});
+router.put( '/:id', (req, res) => {
+  const projectData = req.body;
+  const { id } = req.params;
+
+  // Check for empty required fields:
+  if( !projectData.name || !projectData.description || !projectData.completed ) {
+    res.status(400).json({ error: "Please provide: name, description & completed status."});
+  } else {
+    projects
+      .update(id, projectData)
+      .then( newProject => {
+        if( !newProject || newProject === null ) {
+          res.status(404).json({ error: "Project not found." });
+        } else {
+          res.json( newProject );
+        }
+      })
+      .catch( err => {
+        res.status(500).json({ error: "Could not update project."});
+      });
+    // end projects
+  }
+});
 
 // DELETE:
 router.delete( '/:id', (req, res) => {});
