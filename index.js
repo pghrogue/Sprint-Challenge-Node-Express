@@ -6,6 +6,7 @@ const morgan = require('morgan');
 
 // Route requires:
 const projectsRouter = require('./Routes/projectsRouter');
+const actionsRouter = require('./Routes/actionsRouter');
 
 // Server:
 const server = express();
@@ -21,6 +22,7 @@ server.use(
 
 /* ---------- Routes Middleware: ---------- */
 server.use('/api/projects', projectsRouter);
+server.use('/api/actions', actionsRouter);
 
 // Default route handlers - for testing.
 server.get( '/', (req, res) => {
