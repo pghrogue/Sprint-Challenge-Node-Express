@@ -37,8 +37,18 @@ router.get( '/:id', customMW.checkValidProject, (req, res) => {
 });
 
 // Get actions:
-router.get( '/:id/actions', (req, res) => {
+router.get( '/:id/actions', customMW.checkValidProject, (req, res) => {
+  const { id } = req.params;
 
+  projects
+    .getProjectActions(id)
+    .then( list => {
+      res.json(list);
+    })
+    .catch( err => {
+      res.status(500).json({ error: `Project actions could not be retrieved.`})
+    });
+  // end projects
 });
 
 // POST:
