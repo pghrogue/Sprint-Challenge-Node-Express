@@ -4,6 +4,7 @@ const router = express.Router();
 
 // App requires:
 const projects = require('../data/helpers/projectModel');
+const customMW = require('../middleware/checkValidProject');
 
 
 /* ---------- Endpoints for /api/projects ---------- */
@@ -21,10 +22,24 @@ router.get( '/', (req, res) => {
 });
 
 // GET by id:
-router.get( '/:id', (req, res) => {});
+router.get( '/:id', customMW.checkValidProject, (req, res) => {
+  const { id } = req.params;
+
+  projects
+    .get(id)
+    .then( list => {
+      res.json(list);
+    })
+    .catch( err => {
+      res.status(500).json({ error: `Project information for id: ${id} could not be retrieved.`})
+    });
+  // end projects
+});
 
 // Get actions:
-router.get( '/:id/actions', (req, res) => {});
+router.get( '/:id/actions', (req, res) => {
+
+});
 
 // POST:
 router.post( '/', (req, res) => {});
